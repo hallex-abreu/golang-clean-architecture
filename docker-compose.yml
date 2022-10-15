@@ -1,0 +1,24 @@
+version: '3'
+
+networks:
+  user-local-network:
+    driver: bridge
+    name: user-local-network
+
+services:
+
+  user-clientes-mysql:
+     image: mysql:5.7
+     container_name: customer-mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: admin
+       MYSQL_DATABASE: customerDb
+       MYSQL_USER: docker
+       MYSQL_PASSWORD: docker
+     ports:
+       - 3306:3306
+     networks:
+       - user-local-network
+     volumes:
+       - .:/usr/src/app
