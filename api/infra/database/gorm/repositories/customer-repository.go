@@ -5,7 +5,9 @@ import (
 	"github.com/hallex-abreu/golang-clean-architecture/api/infra/database/gorm"
 )
 
-func FindCustomerByEmail(email string) *domain.Customer {
+type CustomerRepository struct{}
+
+func (c CustomerRepository) FindCustomerByEmail(email string) *domain.Customer {
 	var customer domain.Customer
 	err := gorm.DB.Where("email = ?", email).First(&customer).Error
 
@@ -17,7 +19,7 @@ func FindCustomerByEmail(email string) *domain.Customer {
 
 }
 
-func FindAllCustomers(page int, size int, filter string) *[]domain.Customer {
+func (c CustomerRepository) FindAllCustomers(page int, size int, filter string) *[]domain.Customer {
 	var customers []domain.Customer
 
 	err := gorm.DB.Where("name LIKE ?", "%"+filter+"%").Or("email LIKE ?", "%"+filter+"%").Offset(size * (page - 1)).Limit(size).Find(&customers)
@@ -29,14 +31,14 @@ func FindAllCustomers(page int, size int, filter string) *[]domain.Customer {
 	}
 }
 
-func GetCountCustomers(filter string) int {
+func (c CustomerRepository) GetCountCustomers(filter string) int {
 	var count int64
 	var customerCount []domain.Customer
 	gorm.DB.Where("name LIKE ?", "%"+filter+"%").Or("email LIKE ?", "%"+filter+"%").Find(&customerCount).Count(&count)
 	return int(count)
 }
 
-func CreateCustomer(customer domain.Customer) domain.Customer {
+func (c CustomerRepository) CreateCustomer(customer domain.Customer) domain.Customer {
 	gorm.DB.Create(customer)
 	return customer
 }
