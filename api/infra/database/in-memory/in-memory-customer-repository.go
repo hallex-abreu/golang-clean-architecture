@@ -16,7 +16,20 @@ func (i InMemoryCustomer) FindCustomerByEmail(email string) *domain.Customer {
 	return nil
 }
 
+func (i InMemoryCustomer) FindAllCustomers(page int, size int, filter string) *[]domain.Customer {
+	return &items
+}
+
+func (i InMemoryCustomer) GetCountCustomers(filter string) int {
+	return len(items)
+}
+
 func (i InMemoryCustomer) CreateCustomer(customer domain.Customer) domain.Customer {
 	items = append(items, customer)
 	return customer
+}
+
+// Used for clear items in end of unit test
+func (i InMemoryCustomer) Clear() {
+	items = items[:0]
 }

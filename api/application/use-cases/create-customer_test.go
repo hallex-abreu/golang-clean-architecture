@@ -9,11 +9,11 @@ import (
 	inmemory "github.com/hallex-abreu/golang-clean-architecture/api/infra/database/in-memory"
 )
 
-var name = "Hallex Abreu"
-var email = "contato.hallex@gmail.com"
-var phone = "98383838383"
-
 func Test_Should_be_create_an_customer(t *testing.T) {
+	var name = "Hallex Abreu"
+	var email = "contato.hallex@gmail.com"
+	var phone = "98383838383"
+
 	inMemoryCustomer := inmemory.InMemoryCustomer{}
 
 	customerRequest := usecases.CreateCustomerRequest{
@@ -23,6 +23,7 @@ func Test_Should_be_create_an_customer(t *testing.T) {
 	}
 
 	customer, _ := usecases.CreateCustomer(customerRequest, inMemoryCustomer)
+	inMemoryCustomer.Clear()
 
 	if customer.Name == customerRequest.Name {
 		fmt.Printf("\"create_customer\" SUCCEDED, expected -> %s, got -> %s", name, customer.Name)
@@ -34,6 +35,10 @@ func Test_Should_be_create_an_customer(t *testing.T) {
 }
 
 func Test_Should_be_validation_customer_with_email_already_in_use(t *testing.T) {
+	var name = "Hallex Abreu"
+	var email = "contato.hallex@gmail.com"
+	var phone = "98383838383"
+
 	inMemoryCustomer := inmemory.InMemoryCustomer{}
 
 	customerRequest := usecases.CreateCustomerRequest{
@@ -49,10 +54,11 @@ func Test_Should_be_validation_customer_with_email_already_in_use(t *testing.T) 
 	})
 
 	_, err := usecases.CreateCustomer(customerRequest, inMemoryCustomer)
+	inMemoryCustomer.Clear()
 
 	if err != nil {
-		fmt.Printf("\"create_customer_with_email_already_in_use\" SUCCEDED, ERROR MENSAGE -> %s", err)
-		t.Logf("\"create_customer_with_email_already_in_use\" SUCCEDED, ERROR MENSAGE -> %s", err)
+		fmt.Printf("\"create_customer_with_email_already_in_use\" SUCCEDED, MENSAGE -> %s", err)
+		t.Logf("\"create_customer_with_email_already_in_use\" SUCCEDED, MENSAGE -> %s", err)
 	} else {
 		fmt.Printf("\"create_customer_with_email_already_in_use\" FAILED")
 		t.Errorf("\"create_customer_with_email_already_in_use\" FAILED")
