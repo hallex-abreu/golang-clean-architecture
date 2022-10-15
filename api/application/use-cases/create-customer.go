@@ -17,7 +17,7 @@ func CreateCustomer(customerRequest CreateCustomerRequest, customerRepository re
 	exist_customer := customerRepository.FindCustomerByEmail(customerRequest.Email)
 
 	if exist_customer != nil {
-		return domain.Customer{}, errors.New("Already customer with this email")
+		return domain.Customer{}, errors.New("Already exist customer with this email")
 	}
 
 	customer := domain.Customer{
