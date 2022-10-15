@@ -9,14 +9,12 @@ type CustomerRepository struct{}
 
 func (c CustomerRepository) FindCustomerByEmail(email string) *domain.Customer {
 	var customer domain.Customer
-	err := gorm.DB.Where("email = ?", email).First(&customer).Error
 
-	if err != nil {
-		return &customer
-	} else {
+	if err := gorm.DB.Where("email = ?", email).First(&customer).Error; err != nil {
 		return nil
+	} else {
+		return &customer
 	}
-
 }
 
 func (c CustomerRepository) FindAllCustomers(page int, size int, filter string) *[]domain.Customer {
@@ -39,6 +37,6 @@ func (c CustomerRepository) GetCountCustomers(filter string) int {
 }
 
 func (c CustomerRepository) CreateCustomer(customer domain.Customer) domain.Customer {
-	gorm.DB.Create(customer)
+	gorm.DB.Create(&customer)
 	return customer
 }

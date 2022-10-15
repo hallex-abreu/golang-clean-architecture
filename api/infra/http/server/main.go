@@ -13,6 +13,7 @@ func Init() {
 
 	router.GET("/health", healthControllers.Alive)
 	router.GET("/customer", customerControllers.Index)
+	router.POST("/customer", customerControllers.Store)
 
 	database.Connection()
 
